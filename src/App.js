@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Person from './Person/Person'
 import './App.css';
 
-function App() {
+const App = props => {
+  const [ personsState, setPersonsState ] = useState({
+    persons: [
+      { name: "Artem", age: "27" },
+      { name: "Ann", age: "28" },
+      { name: "Leon", age: "8" }
+    ]
+  });
+
+  const [ otherState, setOtherState ] = useState({
+    text: 'some other text'
+  });
+
+  console.log(personsState, otherState);
+  
+  const switchNameHandler = () => {
+    console.log('Was clicked!');
+    setPersonsState({
+      persons: [
+        { name: "Arty", age: "7" },
+        { name: "Anny", age: "8" },
+        { name: "Leon", age: "8" }
+      ]
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Person name={ personsState.persons[0].name } age={ personsState.persons[0].age }/>
+      <Person name={ personsState.persons[1].name } age={ personsState.persons[1].age }/>
+      <Person name={ personsState.persons[2].name } age={ personsState.persons[2].age }>I have a dog</Person>
+      <p> { otherState.text } </p>
+      <button onClick={switchNameHandler}>Switch Name</button>
     </div>
   );
 }
