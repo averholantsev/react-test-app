@@ -42,6 +42,7 @@ const App = props => {
 
   return (
     <div className="App">
+      <h1>Persons cards</h1>
       <Person 
         name={ personsState.persons[0].name } 
         age={ personsState.persons[0].age }/>
