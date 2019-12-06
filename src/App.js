@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Person from './Person/Person'
 import './App.css';
-import Radium from 'radium';
+import Radium, { StyleRoot } from 'radium';
 
 class App extends Component {
   state = {
@@ -94,14 +94,16 @@ class App extends Component {
     }
     
     return (
-      <div className="App">
-        <h1>Persons cards</h1>
-        <p className={ classes.join(' ') }>This is really working!</p>
-        <button 
-          style={ style }
-          onClick={ this.togglePersonsHandler }>Show/Hide</button>
-        { persons }
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <h1>Persons cards</h1>
+          <p className={ classes.join(' ') }>This is really working!</p>
+          <button 
+            style={ style }
+            onClick={ this.togglePersonsHandler }>Show/Hide</button>
+          { persons }
+        </div>
+      </StyleRoot>
     );
   }
 }
