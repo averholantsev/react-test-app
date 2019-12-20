@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 import classes from './Burger.css'
@@ -17,7 +18,7 @@ const burger = (props) => {
   if (transformedIngredients.length === 0) {
     transformedIngredients = <p>Please start adding ingredients!</p>
   }
-  console.log(transformedIngredients);
+  //console.log(transformedIngredients);
 
   return (
     <div className={ classes.Burger }>
