@@ -1,11 +1,10 @@
-import React from 'react'
+/* eslint-disable no-unused-vars */
+import React from "react";
+import classes from "./Backdrop.css";
 
-const Backdrop = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const Backdrop = props =>
+  props.show ? (
+    <div className={classes.Backdrop} onClick={props.clicked}></div>
+  ) : null;
 
-export default Backdrop
+export default Backdrop;

@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Aux from '../../hoc/aux';
-import Burger from '../../components/Burger/Burger';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Modal from '../../components/UI/Modal/Modal';
+import Aux from "../../hoc/aux";
+import Burger from "../../components/Burger/Burger";
+import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -22,8 +23,21 @@ class BurgerBuilder extends Component {
       meat: 0
     },
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    purchasing: false
   };
+
+  purchaseHandler = () => {
+    this.setState({ purchasing: true });
+  }
+
+  purchaseCancelHandler = () => {
+    this.setState({ purchasing: false });
+  }
+
+  purchaseContinueHandler = () => {
+    alert('You Continue!');
+  }
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -36,11 +50,11 @@ class BurgerBuilder extends Component {
     this.setState({ purchasable: sum > 0 });
   }
 
-  addIngredientHandler = (type) => {
+  addIngredientHandler = type => {
     //Обновляем ингридиент на +1
     const oldCount = this.state.ingredients[type];
     const updatedCount = oldCount + 1;
-    const updatedIngredients = {...this.state.ingredients}
+    const updatedIngredients = { ...this.state.ingredients };
     updatedIngredients[type] = updatedCount;
 
     //Обновляем общую стоимость
@@ -49,16 +63,16 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice + priceAddition;
 
     //Обновляем state
-    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
     this.updatePurchaseState(updatedIngredients);
-  }
+  };
 
-  removeIngredientHandler = (type) => {
+  removeIngredientHandler = type => {
     //Обновляем ингридиент на +1
     const oldCount = this.state.ingredients[type];
     if (oldCount <= 0) return;
     const updatedCount = oldCount - 1;
-    const updatedIngredients = {...this.state.ingredients}
+    const updatedIngredients = { ...this.state.ingredients };
     updatedIngredients[type] = updatedCount;
 
     //Обновляем общую стоимость
@@ -67,27 +81,39 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice - priceDeduction;
 
     //Обновляем state
-    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
     this.updatePurchaseState(updatedIngredients);
-  }
+  };
 
   render() {
     const disableInfo = {
       ...this.state.ingredients
     };
     for (let key in disableInfo) {
-      disableInfo[key] = disableInfo[key] <= 0
+      disableInfo[key] = disableInfo[key] <= 0;
     }
     return (
       <Aux>
-        <Modal />
-        <Burger ingredients={ this.state.ingredients } />
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}
+        >
+          <OrderSummary 
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+            cancel={this.purchaseCancelHandler}
+            continue={this.purchaseContinueHandler}
+          />
+        </Modal>
+        <Burger ingredients={this.state.ingredients} />
         <BuildControls
-          ingredientAdded={ this.addIngredientHandler }
-          ingredientRemoved={ this.removeIngredientHandler }
-          disabled={ disableInfo }
-          purchasable={ this.state.purchasable }
-          price={ this.state.totalPrice } />
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler}
+          disabled={disableInfo}
+          purchasable={this.state.purchasable}
+          ordered={this.purchaseHandler}
+          price={this.state.totalPrice}
+        />
       </Aux>
     );
   }
