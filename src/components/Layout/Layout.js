@@ -1,18 +1,18 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import Aux from '../../hoc/aux';
-import classes from './Layout.css'
+import React from "react";
+import Aux from "../../hoc/aux";
+import classes from "./Layout.css";
+import Toolbar from "../Navigation/Toolbar/Toolbar";
+import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
 
-
-const Layout = (props) => {
+const Layout = props => {
   return (
     <Aux>
-      <div>Toolbar, Sidebar, Backdrop</div>
-      <main className={ classes.Content }>
-        { props.children }
-      </main>
+      <Toolbar />
+      <SideDrawer />
+      <main className={classes.Content}>{props.children}</main>
     </Aux>
   );
-}
+};
 
 export default Layout;
