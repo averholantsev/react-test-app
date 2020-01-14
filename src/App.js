@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import Layout from './hoc/Layout/Layout';
-import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
+import React, { Component } from "react";
+import Layout from "./hoc/Layout/Layout";
+import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
+import { Route, BrowserRouter } from "react-router-dom";
 
 class App extends Component {
-  render () {
-    return(
-      <div>
+  render() {
+    return (
+      <BrowserRouter>
         <Layout>
-          <BurgerBuilder />
+          <Route path="/" exact render={() => <BurgerBuilder />}/>
+          <Route path="/checkout" render={() => <h1>Hello world!</h1>}/>
         </Layout>
-      </div>
+      </BrowserRouter>
     );
   }
 }
