@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import Aux from "../../../hoc/Aux/Aux";
+import Aux from "../../../hoc/AuxW/AuxW";
 import Button from "../../UI/Button/Button";
 
 const orderSummary = props => {

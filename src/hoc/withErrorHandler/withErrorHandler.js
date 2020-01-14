@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/display-name */
 import React, { Component } from "react";
-import Aux from "../Aux/Aux";
+import Aux from "../AuxW/AuxW";
 import Modal from "../../components/UI/Modal/Modal";
 
 const withErrorHandler = (WrappedComponent, axios) => {
