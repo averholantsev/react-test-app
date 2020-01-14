@@ -9,7 +9,7 @@ class App extends Component {
       <BrowserRouter>
         <Layout>
           <Route path="/" exact render={() => <BurgerBuilder />}/>
-          <Route path="/checkout" render={() => <h1>Hello world!</h1>}/>
+          <Route path="/checkout" exact render={() => <h1>Hello world!</h1>}/>
         </Layout>
       </BrowserRouter>
     );
