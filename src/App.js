@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Layout>
-          <Route path="/" exact render={() => <BurgerBuilder />}/>
+          <Route path="/" exact component={BurgerBuilder}/>
           <Route path="/checkout" exact render={() => <h1>Hello world!</h1>}/>
         </Layout>
       </BrowserRouter>
