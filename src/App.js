@@ -1,17 +1,17 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
+
 import Layout from "./hoc/Layout/Layout";
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
-import { Route, BrowserRouter } from "react-router-dom";
+import Checkout from "./containers/Checkout/Checkout";
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Layout>
-          <Route path="/" exact component={BurgerBuilder}/>
-          <Route path="/checkout" exact render={() => <h1>Hello world!</h1>}/>
-        </Layout>
-      </BrowserRouter>
+      <Layout>
+        <Route path="/checkout" component={Checkout} />
+        <Route path="/" exact component={BurgerBuilder} />
+      </Layout>
     );
   }
 }
