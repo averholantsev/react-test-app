@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import axios from "../../axios-orders";
+import * as burgerBuilderActions from "../../store/actions/index";
 
 import Aux from "../../hoc/AuxW/AuxW";
 import Burger from "../../components/Burger/Burger";
@@ -9,8 +11,6 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import axios from "../../axios-orders";
-import * as actionTypes from '../../store/actions';
 
 class BurgerBuilder extends Component {
   state = {
@@ -116,13 +116,18 @@ const mapStateToProps = state => {
     ings: state.ingredients,
     price: state.totalPrice
   };
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENTS, igredientName: ingName}),
-    onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENTS, igredientName: ingName})
-  }
-}
+    onIngredientAdded: ingName =>
+      dispatch(burgerBuilderActions.addIngredient(ingName)),
+    onIngredientRemoved: ingName =>
+      dispatch(burgerBuilderActions.removeIngredient(ingName))
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(BurgerBuilder, axios));
