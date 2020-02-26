@@ -14,22 +14,8 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   };
-
-  /* componentDidMount() {
-    axios
-      .get("/ingredients.json")
-      .then(response => {
-        const array = Object.values(response.data);
-        if (array.reduce((a, b) => a + b) !== 0)
-          this.setState({ ingredients: response.data, purchasable: true });
-        else this.setState({ ingredients: response.data });
-      })
-      .catch(error => this.setState({ error: true }));
-  } */
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -93,10 +79,6 @@ class BurgerBuilder extends Component {
       );
     }
 
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
-
     return (
       <Aux>
         <Modal
@@ -127,7 +109,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withErrorHandler(BurgerBuilder, axios));
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
