@@ -3,7 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   ingredients: null,
   totalPrice: 4,
-  errors: false
+  error: false
 };
 
 const INGREDIENT_PRICES = {
@@ -36,12 +36,18 @@ const reduser = (state = initialState, action) => {
     case actionTypes.SET_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.ingredients
+        ingredients: {
+          salad: action.ingredients.salad,
+          bacon: action.ingredients.bacon,
+          cheese: action.ingredients.cheese,
+          meat: action.ingredients.meat
+        },
+        error: false
       }
     case actionTypes.FETCH_INGREDIENTS_FAILED:
       return {
         ...state,
-        errors: true
+        error: true
       }
     default:
       return state;
