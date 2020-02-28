@@ -1,23 +1,25 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import classes from "./ContactData.css";
 import axios from "../../../axios-orders";
 import Input from "../../../components/UI/Input/Input";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import * as actions from "../../../store/actions/index";
 
 class ContactData extends Component {
   state = {
     orderForm: {
       name: {
-        elementType: 'imput',
+        elementType: "imput",
         elementConfig: {
-          type: 'text',
-          placeholder: 'Your Name'
+          type: "text",
+          placeholder: "Your Name"
         },
-        value: '',
+        value: "",
         validation: {
           required: true
         },
@@ -25,12 +27,12 @@ class ContactData extends Component {
         touched: false
       },
       street: {
-        elementType: 'imput',
+        elementType: "imput",
         elementConfig: {
-          type: 'text',
-          placeholder: 'Street'
+          type: "text",
+          placeholder: "Street"
         },
-        value: '',
+        value: "",
         validation: {
           required: true
         },
@@ -38,27 +40,27 @@ class ContactData extends Component {
         touched: false
       },
       zipcode: {
-        elementType: 'imput',
+        elementType: "imput",
         elementConfig: {
-          type: 'text',
-          placeholder: 'Zip Code'
+          type: "text",
+          placeholder: "Zip Code"
         },
-        value: '',
+        value: "",
         validation: {
           required: true,
           minLength: 5,
-          maxLength:5
+          maxLength: 5
         },
         valid: false,
         touched: false
       },
       country: {
-        elementType: 'imput',
+        elementType: "imput",
         elementConfig: {
-          type: 'text',
-          placeholder: 'Country'
+          type: "text",
+          placeholder: "Country"
         },
-        value: '',
+        value: "",
         validation: {
           required: true
         },
@@ -66,12 +68,12 @@ class ContactData extends Component {
         touched: false
       },
       email: {
-        elementType: 'imput',
+        elementType: "imput",
         elementConfig: {
-          type: 'email',
-          placeholder: 'Your E-Mail'
+          type: "email",
+          placeholder: "Your E-Mail"
         },
-        value: '',
+        value: "",
         validation: {
           required: true
         },
@@ -79,25 +81,23 @@ class ContactData extends Component {
         touched: false
       },
       deliveryMethod: {
-        elementType: 'select',
+        elementType: "select",
         elementConfig: {
           options: [
-            {value: 'fastest', displayValue: 'Fastest'},
-            {value: 'cheapest', displayValue: 'Cheapest'}
+            { value: "fastest", displayValue: "Fastest" },
+            { value: "cheapest", displayValue: "Cheapest" }
           ]
         },
-        value: 'fastest',
+        value: "fastest",
         validation: {},
         valid: true
       }
     },
-    loading: false,
     formIsValid: false
   };
 
-  orderHandler = (event) => {
+  orderHandler = event => {
     event.preventDefault();
-    this.setState({ loading: true });
     const formData = {};
     for (let formElementID in this.state.orderForm) {
       formData[formElementID] = this.state.orderForm[formElementID].value;
@@ -107,22 +107,15 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: formData
     };
-    axios
-      .post("/orders.json", order)
-      .then(response => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      });
+
+    this.props.onOrderBurger(order);
   };
 
   checkValidity(value, rules) {
     let isValid = true;
 
     if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
+      isValid = value.trim() !== "" && isValid;
     }
 
     if (rules.minLength) {
@@ -144,7 +137,10 @@ class ContactData extends Component {
       ...updatedOrderForm[id]
     };
     updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
     updatedFormElement.touched = true;
     updatedOrderForm[id] = updatedFormElement;
 
@@ -153,7 +149,7 @@ class ContactData extends Component {
       formIsValid = updatedOrderForm[inputID].valid && formIsValid;
     }
 
-    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
+    this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
   };
 
   render() {
@@ -162,26 +158,28 @@ class ContactData extends Component {
       formElementsArray.push({
         id: key,
         config: this.state.orderForm[key]
-      })
+      });
     }
     let form = (
       <form onSubmit={this.orderHandler}>
         {formElementsArray.map(formElement => (
-          <Input 
-            key={formElement.id} 
+          <Input
+            key={formElement.id}
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
             invalid={!formElement.config.valid}
             shouldValidate={formElement.config.validation}
             touched={formElement.config.touched}
-            changed={(event) => this.inputChangedHandler(event, formElement.id)}
+            changed={event => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
+        <Button btnType="Success" disabled={!this.state.formIsValid}>
+          ORDER
+        </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -196,8 +194,18 @@ class ContactData extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    price: state.totalPrice
+    price: state.totalPrice,
+    loading: state.loading
   };
-}
+};
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData))
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));
