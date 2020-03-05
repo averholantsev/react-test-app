@@ -14,7 +14,7 @@ class ContactData extends Component {
   state = {
     orderForm: {
       name: {
-        elementType: "imput",
+        elementType: "input",
         elementConfig: {
           type: "text",
           placeholder: "Your Name"
@@ -27,7 +27,7 @@ class ContactData extends Component {
         touched: false
       },
       street: {
-        elementType: "imput",
+        elementType: "input",
         elementConfig: {
           type: "text",
           placeholder: "Street"
@@ -40,7 +40,7 @@ class ContactData extends Component {
         touched: false
       },
       zipcode: {
-        elementType: "imput",
+        elementType: "input",
         elementConfig: {
           type: "text",
           placeholder: "Zip Code"
@@ -55,7 +55,7 @@ class ContactData extends Component {
         touched: false
       },
       country: {
-        elementType: "imput",
+        elementType: "input",
         elementConfig: {
           type: "text",
           placeholder: "Country"
@@ -68,7 +68,7 @@ class ContactData extends Component {
         touched: false
       },
       email: {
-        elementType: "imput",
+        elementType: "input",
         elementConfig: {
           type: "email",
           placeholder: "Your E-Mail"
