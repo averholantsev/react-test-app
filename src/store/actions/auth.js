@@ -11,7 +11,7 @@ export const authStart = () => {
 export const authSuccess = (token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    idToken: token,
+    token: token,
     userId: userId
   };
 };
@@ -29,11 +29,11 @@ export const logout = () => {
   };
 };
 
-export const chechAuthTimeout = (expirationTime) => {
+export const chechAuthTimeout = expirationTime => {
   return dispatch => {
-    setTimeout(()=> {
+    setTimeout(() => {
       dispatch(logout());
-    }, expirationTime * 1000)
+    }, expirationTime * 1000);
   };
 };
 
