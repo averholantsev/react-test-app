@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+For correct work of this application you must create a file "App.config.js" in directory "src".
+In this file you need to add this line:
+
+```JS
+export const AUTH_API_KEY = "ENTER YOUR FIREBASE KEY HERE";
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
