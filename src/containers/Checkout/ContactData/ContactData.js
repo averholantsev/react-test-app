@@ -39,17 +39,18 @@ class ContactData extends Component {
         valid: false,
         touched: false
       },
-      zipcode: {
+      zipCode: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Zip Code"
+          placeholder: "ZIP Code"
         },
         value: "",
         validation: {
           required: true,
           minLength: 5,
-          maxLength: 5
+          maxLength: 5,
+          isNumeric: true
         },
         valid: false,
         touched: false
@@ -75,7 +76,8 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          isEmail: true
         },
         valid: false,
         touched: false
@@ -100,7 +102,9 @@ class ContactData extends Component {
     event.preventDefault();
     const formData = {};
     for (let formElementID in this.state.orderForm) {
-      formData[formElementID] = this.state.orderForm[formElementID].value;
+      formData[formElementID] = this.state.orderForm[
+        formElementID
+      ].value;
     }
     const order = {
       ingredients: this.props.ings,
@@ -108,11 +112,14 @@ class ContactData extends Component {
       orderData: formData
     };
 
-    this.props.onOrderBurger(order);
+    this.props.onOrderBurger(order, this.props.token);
   };
 
   checkValidity(value, rules) {
     let isValid = true;
+    if (!rules) {
+      return true;
+    }
 
     if (rules.required) {
       isValid = value.trim() !== "" && isValid;
@@ -126,6 +133,16 @@ class ContactData extends Component {
       isValid = value.length <= rules.maxLength && isValid;
     }
 
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isValid = pattern.test(value) && isValid;
+    }
+    
     return isValid;
   }
 
@@ -195,14 +212,16 @@ const mapStateToProps = state => {
   return {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading
+    loading: state.order.loading,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData))
-  }
+    onOrderBurger: (orderData, token) =>
+      dispatch(actions.purchaseBurger(orderData, token))
+  };
 };
 
 export default connect(
